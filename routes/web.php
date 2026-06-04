@@ -2,17 +2,15 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It is a breeze. Simply tell Lumen the URIs it should respond to
-| and give it the Closure to call when that URI is requested.
-|
-*/
-
+// Ketika mengakses halaman utama (http://localhost:8000/)
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return "Hello World dari Backend Akmal RS!";
+});
+
+// Atau jika ingin format JSON (standar API Backend)
+$router->get('/api/hello', function () {
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Hello World dari API Backend!'
+    ]);
 });
