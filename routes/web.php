@@ -2,15 +2,35 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
-// Ketika mengakses halaman utama (http://localhost:8000/)
 $router->get('/', function () use ($router) {
-    return "Hello World dari Backend Akmal RS!";
+    return $router->app->version();
 });
 
-// Atau jika ingin format JSON (standar API Backend)
-$router->get('/api/hello', function () {
+// Test ping
+$router->get('/ping', function () {
     return response()->json([
-        'status' => 'success',
-        'message' => 'Hello World dari API Backend!'
+        'status' => true,
+        'message' => 'Pong! Backend is running',
+        'time' => date('Y-m-d H:i:s')
     ]);
 });
+
+// Auth
+$router->post('/auth/login', 'AuthController@login');
+$router->post('/auth/register', 'AuthController@register');
+$router->post('/auth/logout', 'AuthController@logout');
+
+// User
+$router->get('/user/profile', 'UserController@profile');
+
+// Quiz
+$router->get('/quizzes', 'QuizController@index');
+$router->get('/quizzes/{id}', 'QuizController@show');
+$router->post('/quizzes', 'QuizController@store');
+$router->put('/quizzes/{id}', 'QuizController@update');
+$router->delete('/quizzes/{id}', 'QuizController@destroy');
+
+// Quiz Play
+$router->post('/quizzes/{id}/start', 'QuizController@start');
+$router->post('/quizzes/{id}/submit', 'QuizController@submit');
+$router->get('/quizzes/{id}/result', 'QuizController@result');
