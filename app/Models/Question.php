@@ -15,9 +15,30 @@ class Question extends Model
         'options' => 'array'
     ];
 
+    // Relasi ke tabel option_images
+    public function optionImages()
+    {
+        return $this->hasMany(OptionImage::class);
+    }
+
     public function getImageUrlAttribute()
     {
         return $this->image ? FileHelper::url($this->image) : null;
+    }
+
+    // Menggabungkan options dengan gambar dari tabel terpisah
+    public function getOptionsWithImagesAttribute()
+    {
+        $options = $this->options ?? [];
+        $images = $this->optionImages->keyBy('option_index');
+
+        foreach ($options as $index => &$opt) {
+            if (isset($images[$index])) {
+                $opt['image_url'] = FileHelper::url($images[$index]->image_path);
+            }
+        }
+
+        return $options;
     }
 
     public function quiz()

@@ -12,7 +12,6 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// 🔥 Tambahkan konfigurasi filesystem
 $app->configure('filesystems');
 
 $app->withFacades();
@@ -32,7 +31,6 @@ $app->middleware([
     App\Http\Middleware\CorsMiddleware::class,
 ]);
 
-// 🔥 Register Filesystem Service Provider
 $app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 
 $app->register(App\Providers\AppServiceProvider::class);
