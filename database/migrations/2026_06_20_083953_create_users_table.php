@@ -12,7 +12,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('full_name');
             $table->string('username')->unique();
-            $table->string('email')->unique();
+            $table->string('email')->unique();  // 🔥 HARUS ADA
             $table->enum('role', ['student', 'teacher'])->default('student');
             $table->string('password');
             $table->timestamps();
