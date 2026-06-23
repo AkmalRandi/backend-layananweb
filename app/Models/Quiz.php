@@ -6,17 +6,42 @@ use Illuminate\Database\Eloquent\Model;
 
 class Quiz extends Model
 {
+    protected $table = 'quizzes';
+
     protected $fillable = [
-        'title', 'description', 'duration', 'teacher_id'
+        'teacher_id',
+        'title',
+        'subject',
+        'cover_image',
+        'visibility',
+        'join_code',
+        'total_time',
+        'total_points',
+        'description'
     ];
+
+    protected $casts = [
+        'total_time' => 'integer',
+        'total_points' => 'integer'
+    ];
+
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
+    }
 
     public function questions()
     {
         return $this->hasMany(Question::class);
     }
 
-    public function teacher()
+    public function results()
     {
-        return $this->belongsTo(User::class, 'teacher_id');
+        return $this->hasMany(QuizResult::class);
+    }
+
+    public function getQuestionsWithOptionsAttribute()
+    {
+        return $this->questions()->with('options')->get();
     }
 }

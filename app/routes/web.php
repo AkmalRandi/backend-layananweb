@@ -1,3 +1,4 @@
+notepad app\Http\Routes\web.php
 <?php
 
 /** @var \Laravel\Lumen\Routing\Router $router */
@@ -21,18 +22,18 @@ $router->post('/auth/refresh', 'AuthController@refresh');
 // ===== PROTECTED ROUTES =====
 $router->group(['middleware' => 'auth'], function () use ($router) {
     
-    // ===== TEACHER ROUTES =====
+    // TEACHER ROUTES
     $router->group(['prefix' => 'teacher'], function () use ($router) {
         $router->get('/quizzes', 'QuizController@getTeacherQuizzes');
     });
 
-    // ===== QUIZ ROUTES =====
+    // QUIZ ROUTES
     $router->post('/quizzes', 'QuizController@createQuiz');
     $router->delete('/quizzes/{id}', 'QuizController@deleteQuiz');
     $router->patch('/quizzes/{id}/visibility', 'QuizController@toggleVisibility');
     $router->get('/quizzes/{id}/results', 'QuizController@getQuizResults');
 
-    // ===== STUDENT ROUTES =====
+    // STUDENT ROUTES
     $router->get('/quizzes', 'QuizController@getStudentQuizzes');
     $router->get('/quizzes/{id}', 'QuizController@getQuizDetail');
     $router->post('/quizzes/join/{joinCode}', 'QuizController@joinQuiz');

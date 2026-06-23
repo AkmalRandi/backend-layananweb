@@ -21,22 +21,19 @@ $router->post('/auth/refresh', 'AuthController@refresh');
 // ===== PROTECTED ROUTES =====
 $router->group(['middleware' => 'auth'], function () use ($router) {
     
-    // ===== TEACHER ROUTES =====
     $router->group(['prefix' => 'teacher'], function () use ($router) {
         $router->get('/quizzes', 'QuizController@getTeacherQuizzes');
     });
 
-    // ===== QUIZ ROUTES =====
     $router->post('/quizzes', 'QuizController@createQuiz');
     $router->delete('/quizzes/{id}', 'QuizController@deleteQuiz');
     $router->patch('/quizzes/{id}/visibility', 'QuizController@toggleVisibility');
     $router->get('/quizzes/{id}/results', 'QuizController@getQuizResults');
 
-    // ===== STUDENT ROUTES =====
     $router->get('/quizzes', 'QuizController@getStudentQuizzes');
     $router->get('/quizzes/{id}', 'QuizController@getQuizDetail');
     $router->post('/quizzes/join/{joinCode}', 'QuizController@joinQuiz');
     $router->post('/quizzes/{id}/start', 'QuizController@startQuiz');
     $router->post('/quizzes/{id}/submit', 'QuizController@submitQuiz');
     $router->get('/quizzes/{id}/result', 'QuizController@getResult');
-});
+}); 

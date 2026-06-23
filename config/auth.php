@@ -16,7 +16,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class, // Pastikan namespace model User kamu sudah benar disini
+            'model' => \App\Models\User::class,
         ],
     ],
 ];

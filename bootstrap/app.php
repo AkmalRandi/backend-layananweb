@@ -6,13 +6,11 @@ require_once __DIR__.'/../vendor/autoload.php';
     dirname(__DIR__)
 ))->bootstrap();
 
-date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+date_default_timezone_set(env('APP_TIMEZONE', 'Asia/Jakarta'));
 
 $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
-
-$app->configure('filesystems');
 
 $app->withFacades();
 $app->withEloquent();
@@ -27,19 +25,38 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
+// ===== REGISTER CONFIG =====
+$app->configure('auth');
+$app->configure('database');
+$app->configure('jwt'); // 🔥 TAMBAHKAN INI
+
+// ===== REGISTER MIDDLEWARE =====
 $app->middleware([
     App\Http\Middleware\CorsMiddleware::class,
 ]);
 
-$app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+]);
 
+// ===== REGISTER SERVICE PROVIDERS =====
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 
+// ===== REGISTER ALIAS =====
+if (!class_exists('JWTAuth')) {
+    class_alias(Tymon\JWTAuth\Facades\JWTAuth::class, 'JWTAuth');
+}
+if (!class_exists('JWTFactory')) {
+    class_alias(Tymon\JWTAuth\Facades\JWTFactory::class, 'JWTFactory');
+}
+
+// ===== REGISTER ROUTES =====
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    require __DIR__.'/../app/Http/Routes/web.php';
 });
 
 return $app;
